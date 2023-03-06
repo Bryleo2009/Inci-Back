@@ -1,5 +1,6 @@
 package com.ofsystem.InciCerti.Mapper;
 
+import com.ofsystem.InciCerti.Model.Proceso;
 import com.ofsystem.InciCerti.Model.UnidadRecep;
 import org.apache.ibatis.annotations.*;
 
@@ -12,7 +13,7 @@ public interface UnidadRecepMapper {
     int buscador(String UR);
 
     @Select("select UR.id ,UR.unidad_recepcion, UR.nro_alterno, UR.nro_folio,\n" +
-            "TDT.nombre , LT.nro_caja  from public.tb_unit_reception UR\n" +
+            "DT.id as \"DT\" , LT.nro_caja  from public.tb_unit_reception UR\n" +
             "inner join public.tb_lot LT\n" +
             "on LT.id = UR.id_lote\n" +
             "inner join public.tb_documentary_type DT\n" +
@@ -87,4 +88,20 @@ public interface UnidadRecepMapper {
             "LIMIT 1), (select id from public.tb_unit_reception\n" +
             "where id = #{UR}));")
     void registrarNewProcess(int UR,String newProcess);
+
+
+    @Select("select DT.id, TDT.nombre from public.tb_documentary_type DT\n" +
+            "inner join public.tb_template_documentary_type TDT\n" +
+            "on TDT.id = DT.id_template_documentary_type;")
+    List<Proceso> listarProcesos();
+
+    @Select("select id from public.tb_lot LT\n" +
+            "where nro_caja = #{UR};")
+    String lote(String UR);
+
+    @Update("UPDATE public.tb_unit_reception\n" +
+            "SET unidad_recepcion =  #{UR}, nro_alterno =  #{NA},  nro_folio =  #{NF},\n" +
+            "id_documentary_type =  #{DT}, id_lote =  #{LT}\n" +
+            "WHERE id =  #{id};")
+    void changeUR (int id, String UR,String NA, int NF, int DT, int LT);
 }
