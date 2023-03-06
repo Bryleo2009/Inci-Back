@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +34,20 @@ public class UnidadRecepController {
     @GetMapping("/proceso/{UR}")
     public ResponseEntity<String> proceso(@PathVariable("UR") String UR) {
         return new ResponseEntity<String>(service.getProceso(UR), HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity cambioProceso(@RequestParam("UR") int UR,
+                                        @RequestParam("newProcess") String newProcess){
+        if(newProcess.equals("PROCESS_DIGITALIZACION")){
+            System.out.println("Voy a Digitalizacion");
+            service.deleteOne(UR);
+            service.deleteTwo(UR);
+            service.deleteThree(UR);
+            service.deleteFour(UR);
+        }
+        service.changeProcess(UR);
+        service.registrarNewProcess(UR,newProcess);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
