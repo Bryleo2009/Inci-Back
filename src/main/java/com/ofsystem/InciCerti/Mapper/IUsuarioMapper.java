@@ -11,7 +11,7 @@ public interface IUsuarioMapper {
     @Select("select dni, password from public.tb_user;")
     List<Usuario> buscador();
 
-    @Select("select dni, password from public.tb_user\n" +
-            "where dni = #{UR};")
+    @Select("select username as dni, password from public.tb_user\n" +
+            "where username = #{UR};")
     Usuario findByUsername (String UR);
 }
