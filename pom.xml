@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+	<copyright>Copyright © 2023 OfSystem</copyright>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
